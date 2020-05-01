@@ -19,6 +19,7 @@
   "homepage": "https://github.com/Benappiahpoku/bootstraptemplate#readme",
   "dependencies": {
     "bootstrap": "^4.4.1",
+    "copyfiles": "^2.2.0",
     "imagemin-cli": "^5.1.0",
     "jquery": "^3.5.0",
     "onchange": "^7.0.2",
@@ -35,15 +36,24 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "compile": "node-sass --output-style expanded --source-map=true  -o dist/css src/scss",
-    "imagemin": "imagemin src/img/* --out-dir dist/img",
-    "build": "npm run compile  && npm run imagemin",
-    "watch:css": "onchange \"src/scss/*.scss\" -- npm run compile",
-    "watch:images": "onchange \"src/img/*\" -- npm run imagemin",
+
+    "compile": "node-sass --output-style expanded --source-map=true  -o assets/css assets/scss",
+    "imagemin": "imagemin assets/img/* --out-dir dist/img",
+    "move:js": "@powershell copy \"assets/js/*.min.js\" \"dist/js\"",
+    "move:css": "@powershell copy \"assets/css/* \" \"dist/css\"",
+    
+    "build": "npm run compile && npm run move:css && npm run move:js && npm run imagemin",
+
+    "watch:css": "onchange \"assets/scss/*.scss\" -- npm run compile",
+    "watch:images": "onchange \"assets/img/*\" -- npm run imagemin",
     "watch": "npm-run-all --parallel watch:**",
-    "prefix": "postcss dist/css/style.css --use=autoprefixer --map=false --output=dist/css/style.css",
-    "minify": "cleancss --level=1 --source-map --source-map-inline-sources --output dist/css/style.min.css dist/css/style.css",
-    "prod": "npm run compile && npm run prefix && npm run minify"
+
+    "prefix": "postcss assets/css/style.css --use=autoprefixer --map=false --output=assets/css/style.css",
+    "minify": "cleancss --level=1 --source-map --source-map-inline-sources --output assets/css/style.min.css assets/css/style.css",
+
+
+    "prod": "npm run build && npm run prefix && npm run minify "
+
   },
   "browserslist": [
     "last 2 versions"

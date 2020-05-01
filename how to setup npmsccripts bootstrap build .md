@@ -90,4 +90,5 @@
 # how to use the npm to run the scripts in the terminal for production?
 - npm run prod
 - remember to change the ../dist/css/style.min.css
-  
+
+
